@@ -5,6 +5,7 @@
 import os
 import xml.etree.ElementTree as ET
 from datetime import datetime
+import asyncio
 
 from discord.ext import commands
 
@@ -175,9 +176,20 @@ async def strim():
         msgs.append('Strim is down')
         msgs.extend(_next_strim())
     if msgs:
-        print(' | '.join(msgs))
         await bot.say(' | '.join(msgs))
 
 
+async def check_live():
+    await bot.wait_until_ready()
+    while not bot.is_closed:
+        msgs = _check_live()
+        if msgs:
+            for channel in bot.get_all_channels():
+                if channel.name == 'strim_announcements':
+                    await bot.send_message(channel, ' | '.join(msgs))
+        await asyncio.sleep(60)
+
+
 _configure_kps()
+bot.loop.create_task(check_live())
 bot.run(os.environ.get('SUNDRY_BOT_TOKEN', 'token'))
