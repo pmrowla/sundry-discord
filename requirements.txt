@@ -1,0 +1,7 @@
+discord.py
+oauthlib
+pyshorteners
+python-dateutil
+pytz
+requests
+requests-oauthlib
