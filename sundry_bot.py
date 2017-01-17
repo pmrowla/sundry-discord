@@ -114,15 +114,13 @@ def _next_strim():
         strim = data['results'][0]
         title = strim.get('title')
         timestamp = parse(strim.get('timestamp'))
-        channel_name = strim.get('channel', {}).get('name')
         slug = strim.get('slug')
         td = timestamp - pytz.utc.localize(datetime.utcnow())
         msgs.append('Next strim in {}'.format(
             format_timedelta(td),
         ))
-        msgs.append('{} - {}: {}'.format(
+        msgs.append('{} - {}'.format(
             timestamp.astimezone(KR_TZ).strftime('%Y-%m-%d %H:%M KST'),
-            channel_name,
             title,
         ))
         msgs.append(
